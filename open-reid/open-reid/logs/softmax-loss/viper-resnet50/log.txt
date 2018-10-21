@@ -1,0 +1,9 @@
+Files already downloaded and verified
+VIPeR dataset loaded
+  subset   | # ids | # images
+  ---------------------------
+  train    |   216 |      432
+  val      |   100 |      200
+  trainval |   316 |      632
+  query    |   316 |      632
+  gallery  |   316 |      632
