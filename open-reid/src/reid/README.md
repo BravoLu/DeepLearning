@@ -1,5 +1,5 @@
 # Code Reference
-## evaluation_metrics - 
+## evaluation_metrics/ 
 ### clasification.py
 ```
 	accuracy(output,target,topk=(1,))
@@ -73,4 +73,102 @@ $AP = \sum_n(R_n-R_{n-1})P_n$
 	y_true = matches[i,valid]  - 正例样本
 	y_score = -distmat[i][indices[i]][valid] - measure decision,取负
 	average(average_precision_score(y_true, y_score))
+```
+## datasets/
+将数据集统一成一样的格式。
+
+## feature_extraction/ 
+### database.py
+FeatureDatabase继承Torch.utils.data中的Dataset.
+### cnn.py
+modules：这个参数的作用？？？
+```
+def extract_cnn_feature(model, inputs, modules=None):
+	if modules is None:
+		return model(inputs).data
+
+
+```
+
+## loss/
+### oim.py
+```
+# 继承autograd.Function
+# Function由forward,backward的方法
+class OMI(autograd.Function):
+
+
+class OIMLoss(nn.Module):
+	
+```
+### triplet.py
+```
+
+```
+## models/
+num_features - 是否将特征提取设置为指定维度
+### resnet.py
+```
+	ResNet(depth, pretrained=True,
+		cur_at_pooling=False,num_features=0,
+		norm=False,dropout=0,num_classes=0)
+	cur_at_pooling - 如果True，将取出最后一个global pooling层前的model，并ignore剩下的参数
+
+	num_features   - 如果为正，则在global pooling层后面加一个全连接层，输出结点数为num_features。后面
+	加个BN层。Default:256 for 'inception' 0 for resnet
+
+	norm           - True:将feature归一化为L2-norm，否者会加一个ReLU层
+	dropout        - 
+
+	num_classes    - 如果为正，会在尾端加一个全连接层作为分类器
+
+
+
+
+	pretrained=False执行reset_params()。初始化参数
+	self.modules(): 返回网络结构
+```
+
+### inception.py
+```
+	InceptionNet(cut_at_pooling=False,num_features=256,norm=False,dropout=0,num_classes=0)
+```
+
+## metric_learning/
+
+## utils/data/
+### dataset.py
+```
+	Data(root, split_id=0)
+
+	split_id - 从第几个split_id开始
+
+	Data.load(num_val=0.3,verbose=True) - num_val 测试集的比率
+
+	_pluck(identities,indices,relabel=False) - relabel对不同的Train,val集重新设置label.
+	根据indices从identities中获得信息，并返回(filename,person_id,camera_id)
+
+
+```
+### preprocessor.py
+```
+	Proprocessor(dataset, root=None, transform=None)
+	_get_single_item(self,index):	返回(img,filename,person_id,camera_id)
+
+```
+
+### sampler.py
+```
+	RandomIdentitySample(data_source, num_instances=1)
+	# 应该是随机取样
+```
+
+### transforms.py
+```
+	RectScale(height, width, interpolation=Image.BILINEAR):
+		w,h = img.size
+		return img.resize((self.width,self.height),self.interpolation)
+
+	RandomSizedRectCrop(height,width,interpolation=Image.BILINEAR) - 先从图片中随机取一部分，然后再将它resize成相应大小
+
 ```
