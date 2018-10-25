@@ -68,8 +68,8 @@ BATCH_SIZE = 128
 LR = 0.1
 
 transform_train = transforms.Compose([
-		transforms.RandomCrop(32, padding=4),  #先四周填充0，在吧图像随机裁剪成32*32
-   		transforms.RandomHorizontalFlip(),  #图像一半的概率翻转，一半的概率不翻转
+		transforms.RandomCrop(32, padding=4),  
+   		transforms.RandomHorizontalFlip(),  
 		transforms.ToTensor(),
 		transforms.Normalize((0.4914,0.4822,0.4465), (0.2023, 0.1994, 0.2010)),
 	])
@@ -77,14 +77,14 @@ transform_test = transforms.Compose([
 		transforms.ToTensor(),
 		transforms.Normalize((0.4914,0.4822,0.4465), (0.2023, 0.1994, 0.2010)),
 	])
+
 # data preprocessing
 train_set = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
 test_set = torchvision.datasets.CIFAR10(root='./data',train=False,download=False, transform=transform_test) 
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
 test_loader  = torch.utils.data.DataLoader(test_set, batch_size=100, shuffle=False)
-
-classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+#classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 model = ResNet()
 if torch.cuda.is_available():
@@ -93,7 +93,7 @@ if torch.cuda.is_available():
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=LR) #momentum, weight_decay
 
-#Trainning 
+#Training 
 for epoch in range(EPOCH):
 	model.train()
 	for step,(x,y) in enumerate(train_loader):
@@ -108,18 +108,17 @@ for epoch in range(EPOCH):
 		loss.backward()
 		optimizer.step()
 
+	
 	with torch.no_grad():
-		correct = 0 
-		total = 0
+		model.eval()
 		for step,(x,y) in enmuerate(test_loader):
-			model.eval()
 			if torch.cuda.is_available():
 				x = x.cuda()
 				y = y.cuda()
 			output = model(x)
 			loss = criterion(output,y) 
-			pred_y = torch.max(output.data, 1)[1].data.squeeze().numpy()
-			acc = torch.sum(pred_y == b_y.data.squeeze().numpy()).type(torch.FloatTensor) / test_y.size(0)
+			pred_y = torch.max(output.data, 1)[1].data.squeeze()
+			acc = torch.sum(pred_y == b_y.data.squeeze()).type(torch.FloatTensor) / test_y.size(0)
 			print('EPOCH: {} | Test loss: {.4f} | Test Acc {.2f}'.format(epoch,loss.data.numpy(), acc))
 
 torch.save(cnn.state_dict(), 'ResNet_params.pth')
