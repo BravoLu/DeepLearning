@@ -65,6 +65,7 @@ def cmc(distmat, query_ids=None, gallery_ids=None,
                 sampled = (valid & _unique_sample(ids_dict, len(valid)))
                 index = np.nonzero(matches[i, sampled])[0]
             else:
+                #因为np.nonzero返回的是元组
                 index = np.nonzero(matches[i, valid])[0]
             delta = 1. / (len(index) * repeat)
             for j, k in enumerate(index):
