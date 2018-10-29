@@ -111,6 +111,14 @@ for epoch in range(EPOCH):
 	
 	with torch.no_grad():
 		model.eval()
+
+		# 
+		losses = 0.0 
+		acc_nums = 0
+		num_batch = 0
+		num_instance = 0
+
+
 		for step,(x,y) in enmuerate(test_loader):
 			if torch.cuda.is_available():
 				x = x.cuda()
@@ -118,8 +126,17 @@ for epoch in range(EPOCH):
 			output = model(x)
 			loss = criterion(output,y) 
 			pred_y = torch.max(output.data, 1)[1].data.squeeze()
-			acc = torch.sum(pred_y == b_y.data.squeeze()).type(torch.FloatTensor) / test_y.size(0)
-			print('EPOCH: {} | Test loss: {.4f} | Test Acc {.2f}'.format(epoch,loss.data.numpy(), acc))
+			acc = torch.sum(pre_y==y.data.squeeze())
+
+			losses += loss.item()
+			acc_nums += acc.item()
+			num_batch += 1
+			num_instance += pred_y.size(0)
+
+		loss = losses / num_batch
+		acc = acc_nums / num_instance
+
+		print('EPOCH: {} | Test loss: {:.4f} | Test Acc {:.2f}'.format(epoch,loss.data.numpy(), acc))
 
 torch.save(cnn.state_dict(), 'ResNet_params.pth')
 

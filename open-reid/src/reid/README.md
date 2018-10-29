@@ -9,9 +9,23 @@
 
 ### ranking.py
 三个参数separate_camera_set, single_gallery_shot,first_match_break的作用分别是：
-separate_camera_set:
-single_gallery_shot:
-first_match_break:
+separate_camera_set : 过滤同一个camera下的sample
+single_gallery_shot: 
+CUHK03: 这个数据集中，query和gallery集来自不同的摄像头视角。对于每个query，随机地从每个gallery identity中采样一个instance,然后以single-gallery-shot的方式计算CMC curve.随机采样重复N次，最终输出CMC curve。
+Market-1501:Query和gallery集可能来自相同的摄像头视角，但是对于每个query identity,他的来自同一个摄像头的gallery samples会被排除掉。对于每个gallery identity，他们不糊只随机采样一个instance。这意味着在计算CMC时，query将总是匹配gallery中“最简单”的正样本，而不关注其他更难识别的正样本。所以在muti-gallery-shot情况下，CMC评估具有缺陷，因此，也使用mAP作为评估指标。mAP可认为ishiPR曲线下的面积，即平均查准率。
+first_match_break : 找到第一个match就停止
+
+具体取值：
+	allshots : dict(separate_camera_set=False,
+					single_gallery_shot=False,
+					first_match_break=False)
+	cuhk03:	   dict(separte_camera_set=True,
+					single_gallery_shot=True,
+					first_match_break=False)
+	market1501:	 dict(separte_camera_set=False,
+					single_gallery_shot=False,
+					first_match_break=True)
+
 ```
 	cmc(distmat,
 		query_ids=None,
