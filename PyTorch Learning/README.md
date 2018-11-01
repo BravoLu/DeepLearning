@@ -164,8 +164,12 @@
     torch.nonzero(input, out=None) -> LongTensor
     返回一个包含输入input中非0元素索引的张量，输出张量中的每行包含输入中非零元素的索引
 
-
-
-
+```
+### 2018-11-1
+```
+np.random.seed(int)
+torch.manual_seed(int)
+torch.cuda.manual_seed_all()
+# 为CPU/GPU设置种子，使得结果是确定的。
 
 ```

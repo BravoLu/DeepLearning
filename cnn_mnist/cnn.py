@@ -46,8 +46,8 @@ test_data = dset.MNIST(
 	drop_last - 如果数据集大小不能被batch size整除，则设置为True后可删除最后一个不完整的batch。
 '''
 train_loader = Data.DataLoader(dataset=train_data,batch_size=BATCH_SIZE,shuffle=True)
-test_x = torch.unsqueeze(test_data.test_data,dim=1).type(torch.FloatTensor)[:10000].cuda()/255
-test_y = test_data.test_labels[:10000].cuda()
+test_x = torch.unsqueeze(test_data.test_data,dim=1).type(torch.FloatTensor)[:10000]/255
+test_y = test_data.test_labels[:10000]
 
 
 '''
@@ -105,7 +105,6 @@ class CNN(nn.Module):
 
 # training
 cnn = CNN()
-cnn.cuda()
 '''
 	optimizer对象能够保持当前参数状态并基于计算得到的梯度进行参数更新。
 	构建：需要给它一个包含需要优化的参数（Variable对象）的iterable
@@ -135,8 +134,8 @@ loss_func  = nn.CrossEntropyLoss()
 
 for epoch in range(EPOCH):
 	for step,(x,y) in enumerate(train_loader):
-		b_x = x.cuda()
-		b_y = y.cuda()
+		b_x = x
+		b_y = y
 
 		plot_x.append(step)
 		output = cnn(b_x)
@@ -145,7 +144,8 @@ for epoch in range(EPOCH):
 		optimizer.zero_grad()
 		loss.backward()
 		optimizer.step()
-
+		for g in optimizer.param_groups:
+			print(g.get('lr_mult',1))
 
 		if step%50 == 0:
 			test_output = cnn(test_x)
@@ -160,7 +160,7 @@ for epoch in range(EPOCH):
 			'''
 
 			#torch.max返回(val,index)
-			pred_y = torch.max(test_output,1)[1].cuda().data.squeeze().numpy()
+			pred_y = torch.max(test_output,1)[1].data.squeeze().numpy()
 			acc = torch.sum(pred_y == test_y).type(torch.FloatTensor) / test_y.size(0)
 			#acc = float((pred_y == test_y.data.numpy()).astype(int).sum())/float(test_y.size(0))
 			#print('Epoch: ', epoch, '| train loss: %.4f' % loss.data.numpy(), '| test accuracy: %.2f' % acc)

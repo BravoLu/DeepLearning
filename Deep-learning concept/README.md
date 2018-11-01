@@ -13,3 +13,12 @@ This doc marks down the Deep Learning(Machine Learning) concepts that I never he
 
 ## train from scratch
 从头开始训练
+
+## [b, h , w , c]
+b: batchsize
+h: height
+w: with
+c: channels
+
+## upsampling and downsampling
+d	
