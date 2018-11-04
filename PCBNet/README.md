@@ -12,8 +12,30 @@ linux下换行为/n，windows下为/r/n，secureCRT远程控制server时键入�
 ## PCB
 ### Structure
 ![img](image/structure.png)
-
-
+首先将图片输入一个backbone（GoogleNet/ResNet）网络中，原作者在这使用的是ResNet50(移除GAP(global average pool)层和其后的FC层)。得到的tensor T后将其等分成6份（RPP的分发不同）输入一个average pooling层后分为6个一维向量，然后再利用1x1 Conv层降维(2048\*6 -> 256\*6)（Feature为$g$不需要该层）,最后分别输入到不同6个不同的FC层得到loss0~loss5，Optimizer用的是CrossEntropy，evaluate mode下使用的feature为($g_0 \ldots g_5$)或($h_0 \ldots h_5$).
+### details
+|Parameter| value|
+|  -      |  -   |
+| epochs  | 60   |
+|LR       | 0.1 - 0.01(40 epochs)|
+|batch-size| 64  |
+|pretrained| True(by ImageNet)|
+* $g$ or $h$
+根据作者给出的数据，1x1conv降维后网络性能并没有大的改变，但是$h$的训练速度会大大增加。
+* Variant 1 and Variant 2
+作者提出了两种变种分别为Variant 1:对vector $g$($h$)做平均后再输入到一个FC层中，即将原来的6个分类器减少到1个.Variant 2:6个分类器共享参数。
+### results
+* PCB($h$)
+![img](image/PCB_result.png)
+* PCB($g$)
+```
+Mean AP: 74.5%
+CMC Scores    allshots      cuhk03  market1501
+  top-1          54.8%       76.5%       90.1%
+  top-5          69.9%       91.7%       96.6%
+  top-10         75.9%       95.0%       97.4%
+```
+* Variant 1
 ### some issue
 如果在我的server直接运行源码会出现几处issue
 * issue 1:
