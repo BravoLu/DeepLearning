@@ -172,4 +172,12 @@ torch.manual_seed(int)
 torch.cuda.manual_seed_all()
 # 为CPU/GPU设置种子，使得结果是确定的。
 
+nn.DataParallel(model).cuda()
+# 多GPU()
+
+# 动态调整参数
+param_groups = [
+                {'params':model.module.base.parameters(), 'lr_mult':0.1},
+                {'params':new_params, 'lr_mult': 1.0 }]
 ```
+
