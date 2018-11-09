@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python Variant1g.py -d market -a Variant1_g -b 64 -j 4 --epochs 60 --log logs/market-1501/Variant1g/ --combine-trainval --height 384 --width 128  --step-size 40 --data-dir ~/share2/data/Market-1501-v15.09.15/ --feature 2048

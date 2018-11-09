@@ -181,3 +181,16 @@ param_groups = [
                 {'params':new_params, 'lr_mult': 1.0 }]
 ```
 
+### 2018-11-4
+```python
+x.contiguous().view()
+# 在调用view之前最好线contiguous，因为view需要tensor的内存是整块的
+# 在pytorch 0.4中增加了Torch.reshape() == tensor.contiguous().view()
+
+
+torch.norm(input, p=2) 
+# 返回p范数
+torch.norm(input, p, dim , keepdim=False, out=None)
+# 对dim维返回p范数
+
+```

@@ -52,6 +52,11 @@ CMC Scores    allshots      cuhk03  market1501
 ```
 * Variant 1($g$)
 ```
+Mean AP: 64.0%
+CMC Scores    allshots      cuhk03  market1501
+  top-1          41.1%       67.7%       81.3%
+  top-5          58.4%       88.2%       91.9%
+  top-10         66.3%       92.8%       95.1%
 ```
 * Variant 2($h$)
 ```
@@ -59,6 +64,51 @@ CMC Scores    allshots      cuhk03  market1501
 * Variant 2($g$)
 ```
 ```
+### code
+由于原作者源码中并没有给出Variant 1,Variant 2的代码，所以简单对PCB修改。
+* PCB -> Variant 1
+```python
+
+            x_avg = (x0 + x1 + x2 + x3 + x4 + x5)/6 
+            c_avg = self.instance0(x_avg)
+            #c0 = self.instance0(x0)
+            #c1 = self.instance1(x1)
+            #c2 = self.instance2(x2)
+            #c3 = self.instance3(x3)
+            #c4 = self.instance4(x4)
+            #c5 = self.instance5(x5)
+            #return out0, (c0, c1, c2, c3, c4, c5), local_mask
+            return out0, c_avg, local_mask 
+
+
+```
+
+* PCB -> Variant 2 
+```python
+            #共享参数
+            c0 = self.instance0(x0)
+            c1 = self.instance0(x1)
+            c2 = self.instance0(x2)
+            c3 = self.instance0(x3)
+            c4 = self.instance0(x4)
+            c5 = self.instance0(x5)
+
+```
+
+* $h$ -> $g$
+```python
+            #将1x1conv去掉
+            #x = self.drop(x)
+            #x = self.local_conv(x)
+
+            out1 = x.view(x.size(0),-1)
+            out1 = x/x.norm(2,1).unsqueeze(1).expand_as(x)
+            
+            x# = self.feat_bn2d(x)
+            out1 = x/x.norm(2,1).unsqueeze(1).expand_as(x)
+            #x = F.relu(x) # relu for local_conv feature
+```
+
 
 ## RPP
 ### structure
@@ -67,6 +117,8 @@ CMC Scores    allshots      cuhk03  market1501
 PCB-RPP首先会在原PCB结构下训练到收敛(作者用了20 epochs)，此时将输出的vector $f$计算相似性，会得到下图的结果，RPP就是针对下图的outliners改进的。
 ![img](image/RPP.png)
 具体改进就是用一个linear layer+softmax算出每个向量属于$P_i$的概率，然后按概率等比例分配至不同的stripe中。
+![img](image/math1.png)
+![img](image/math2.png)
 ### results
 * PCB+RPP($h$)
 ```
@@ -90,7 +142,7 @@ CMC Scores    allshots      cuhk03  market1501
 ```
 
 ### some issue
-如果在我的server直接运行源码会出现几处issue
+如果在我的server直接运行源码会出现几处由于pytorch和python版本问题的issue。
 * issue 1:
 ```Python
 torch.autograd.backward([ loss0, loss1, loss2, loss3, loss4, loss5],[torch.ones(1).cuda(), torch.ones(1).cuda(), torch.ones(1).cuda(),torch.ones(1).cuda(),torch.ones(1).cuda(),torch.ones(1).cuda(),torch.ones(1).cuda()]) 
