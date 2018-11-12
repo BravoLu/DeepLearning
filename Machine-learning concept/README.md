@@ -1,3 +1,7 @@
+<script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 # Machine Learning concepts
 This doc marks down the Deep Learning(Machine Learning) concepts that I never heard of. 
 
