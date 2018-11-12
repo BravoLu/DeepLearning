@@ -1,5 +1,3 @@
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
 # Machine Learning concepts
 This doc marks down the Deep Learning(Machine Learning) concepts that I never heard of. 
 
@@ -48,12 +46,13 @@ generalization error = bias + variance + noise
 在均等代价时，ROC曲线不能直接反应出模型的期望总体代价，而代价曲线可以。
 代价曲线横轴为[0,1]的正例函数代价：
 
-$$P(+)Cost=\frac{p\*Cost_{01}}{p\*Cost_{01}+(1-p)\*Cost_{10}}$$
+<img src="http://latex.codecogs.com/gif.latex?P(+)Cost=\frac{p\*Cost_{01}}{p\*Cost_{01}+(1-p)\*Cost_{10}}" />
+
 
 其中p是样本为正例的概率。
 
 代价曲线纵轴维[0,1]的归一化代价：
-$$Cost_{norm}=\frac{FNR*p*Cost_{01}+FNR*(1-p)*Cost_{10}}{p*Cost_{01}+(1-p)*Cost_{10}}$$
+<img src="http://latex.codecogs.com/gif.latex?Cost_{norm}=\frac{FNR*p*Cost_{01}+FNR*(1-p)*Cost_{10}}{p*Cost_{01}+(1-p)*Cost_{10}}" />
 
 ## （参数估计）点估计，区间估计，中心极限定理之间的联系
 点估计：用样本统计量来估计总体参数，因为样本统计量为数组上某一点指，估计的结果也以一个点的数值表示，所以称为点估计。
