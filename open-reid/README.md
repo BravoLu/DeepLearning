@@ -114,3 +114,12 @@ https://cysu.github.io/open-reid/examples/benchmarks.html
 	class reid.models.InceptionNet(cur_at_pooling=False,num_features=256,norm=False,dropout=0,num_classes=0)
 	class reid.models.ResNet(cur_at_pooling=False,num_features=256,norm=False,dropout=0,num_classes=0)
 ```
+
+### Dataset 
+split.json 用来区分trainval,gallery,query集  其中trainval和Gallery无交集，query为gallery的子集。
+split.json共有多种分法，可以设置参数split_id选择分法。   
+meta为ID：[camera_ID:]
+
+data_set load得到的是(fname,index,camid)(relabel=True) (fname,pid,camid)(relabel=False) (是否为数据从新设置从0开始,一般在训练测试时relabel=True,在query，gallery为False)
+
+

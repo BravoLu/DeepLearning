@@ -5,7 +5,7 @@ import numpy as np
 
 from ..serialization import read_json
 
-
+#relable=True(fname,index,camid) False(fname,pid,camid)
 def _pluck(identities, indices, relabel=False):
     ret = []
     for index, pid in enumerate(indices):
@@ -13,6 +13,7 @@ def _pluck(identities, indices, relabel=False):
         for camid, cam_images in enumerate(pid_images):
             for fname in cam_images:
                 name = osp.splitext(fname)[0]
+                #把_映射为数字
                 x, y, _ = map(int, name.split('_'))
                 assert pid == x and camid == y
                 if relabel:

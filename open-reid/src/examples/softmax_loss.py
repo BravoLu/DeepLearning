@@ -24,11 +24,13 @@ def get_data(name, split_id, data_dir, height, width, batch_size, workers,
              combine_trainval):
     root = osp.join(data_dir, name)
 
+    # 修改这里
     dataset = datasets.create(name, root, split_id=split_id)
 
     normalizer = T.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])
 
+    #pin_memory 锁页内存，速度更快
     train_set = dataset.trainval if combine_trainval else dataset.train
     num_classes = (dataset.num_trainval_ids if combine_trainval
                    else dataset.num_train_ids)
@@ -47,6 +49,7 @@ def get_data(name, split_id, data_dir, height, width, batch_size, workers,
     ])
 
     train_loader = DataLoader(
+        #img(rgb), fname, pid, camid
         Preprocessor(train_set, root=dataset.images_dir,
                      transform=train_transformer),
         batch_size=batch_size, num_workers=workers,
@@ -80,16 +83,21 @@ def main(args):
     if args.height is None or args.width is None:
         args.height, args.width = (144, 56) if args.arch == 'inception' else \
                                   (256, 128)
+
     dataset, num_classes, train_loader, val_loader, test_loader = \
         get_data(args.dataset, args.split, args.data_dir, args.height,
                  args.width, args.batch_size, args.workers,
                  args.combine_trainval)
 
     # Create model
+    # args - resnet50
+    
     model = models.create(args.arch, num_features=args.features,
                           dropout=args.dropout, num_classes=num_classes)
 
     # Load from checkpoint
+
+    # args.resume & args.evaluate 直接看evaluate,不训练。
     start_epoch = best_top1 = 0
     if args.resume:
         checkpoint = load_checkpoint(args.resume)
@@ -101,6 +109,7 @@ def main(args):
     model = nn.DataParallel(model).cuda()
 
     # Distance metric
+    # 当algorithm = eculidean时，没什么用，只是为了KISSME封装成DistanceMetric接口
     metric = DistanceMetric(algorithm=args.dist_metric)
 
     # Evaluator
@@ -135,6 +144,7 @@ def main(args):
     trainer = Trainer(model, criterion)
 
     # Schedule learning rate
+    # 总体的学习率上乘0.1 ，base后面的学习率需要更高，每step_size个epoch后学习率降低0.1
     def adjust_lr(epoch):
         step_size = 60 if args.arch == 'inception' else 40
         lr = args.lr * (0.1 ** (epoch // step_size))

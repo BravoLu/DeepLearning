@@ -41,6 +41,7 @@ def extract_features(model, data_loader, print_freq=1, metric=None):
 
 
 def pairwise_distance(features, query=None, gallery=None, metric=None):
+    #算自己的eculidean matrix
     if query is None and gallery is None:
         n = len(features)
         x = torch.cat(list(features.values()))
@@ -50,7 +51,7 @@ def pairwise_distance(features, query=None, gallery=None, metric=None):
         dist = torch.pow(x, 2).sum(dim=1, keepdim=True) * 2
         dist = dist.expand(n, n) - 2 * torch.mm(x, x.t())
         return dist
-
+    #算query和gallery的eculidean matrix
     x = torch.cat([features[f].unsqueeze(0) for f, _, _ in query], 0)
     y = torch.cat([features[f].unsqueeze(0) for f, _, _ in gallery], 0)
     m, n = x.size(0), y.size(0)
@@ -80,6 +81,7 @@ def evaluate_all(distmat, query=None, gallery=None,
 
     # Compute mean AP
     mAP = mean_ap(distmat, query_ids, gallery_ids, query_cams, gallery_cams)
+
     print('Mean AP: {:4.1%}'.format(mAP))
 
     # Compute all kinds of CMC scores

@@ -80,3 +80,29 @@ np.flatten() #返回的是拷贝
     os.pathsep: ';'  路径
     os.linesep: '\r\n'  
 ```
+
+## 2018-11-13
+```python
+dict.setdefault(key, default=None)
+#如果键不存在于字典中，将会添加键并将值设为默认值。
+
+#随机取样
+sample_number = int(total_number * sample_ratio)
+sample_list = random.sample(total_list, sample_number)
+unsample_list = [ w for w in total_list if w not in sample_list ]
+
+```
+
+## 2018-12-14
+```python
+#built-in function
+all(iterable)
+any(iterable)
+bin(x)
+enumerate(iterable,start=0)
+chr(num)  返回ascii码为num的字符
+delatrr(object, 'name')   删除属性 
+filter(function, iterable)
+
+```
+

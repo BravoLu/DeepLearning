@@ -114,3 +114,14 @@ WN对网络权值W进行normalization.
 ## Dropout
 hidden layer dropout=0.5最好。
 
+## BN与学习率的关系
+增大batch-size相当于降低学习率
+
+## multi-task learning
+
+## Bottleneck
+
+## softmax&cross entropy loss
+entropy loss 如下：
+![img](softmax.jpg)  
+$p_j$为softmax得到的概率

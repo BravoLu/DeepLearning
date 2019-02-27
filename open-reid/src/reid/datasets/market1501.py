@@ -10,12 +10,12 @@ from ..utils.serialization import read_json
 ########################
 # Added
 def _pluck(identities, indices, relabel=False):
-  """Extract im names of given pids.
-  Args:
+    """Extract im names of given pids.
+    Args:
     identities: containing im names
     indices: pids
     relabel: whether to transform pids to classification labels
-  """
+    """
     ret = []
     for index, pid in enumerate(indices):
         pid_images = identities[pid]
