@@ -194,3 +194,11 @@ torch.norm(input, p, dim , keepdim=False, out=None)
 # 对dim维返回p范数
 
 ```
+
+
+### 2019-4-4
+* nn.LSTM
+![img](lstm.png)
+|-|-|-|-|-|-|
+|$i_t$| $f_t | $g_t$| $0_t$ | $c_t$| $h_t$|
+|input|forget| cell | output|  cell state |hidden state|
