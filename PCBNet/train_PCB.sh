@@ -1,1 +1,0 @@
-CUDA_VISIBLE_DEVICES=0 python PCB.py -d market -a Variant2_h -b 64 -j 4 --epochs 60 --log logs/market-1501/variant2_h/ --combine-trainval --feature 256 --height 384 --width 128 --data-dir ~/share2/data/Market-1501-v15.09.15/ --step-size 40

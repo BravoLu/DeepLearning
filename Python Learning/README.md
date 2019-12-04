@@ -106,3 +106,59 @@ filter(function, iterable)
 
 ```
 
+## 2019-12-3
+```python 
+def template():
+    def __init__():
+        pass 
+    '''
+        with xxx as xxx:
+        with要求对象必须有__enter__()&__exit__()方法，__enter__()返回的值赋给as后面的值
+    '''
+    def __enter__():
+        pass 
+
+    def __exit__():
+        pass
+
+    '''
+        __str__方法只适用于print(), 不适用于shell中的直接输出。
+    '''
+    def __str__(self,):
+        pass 
+
+    def __repr__(self,):
+        pass 
+
+```
+
+### 相对引用
+* python某个module中使用了相对引用，同时这个module的__name__属性又是__main__会报错问题。如果一个python文件是__main__，那么相对引用会被解析成top level module，而不关注这个module是否存在这个文件系统中。
+
+## 2019-12-4
+```python
+time.strftime("%m-%d-%H:%M:%S")
+```
+
+* 文件目录
+```python
+os.mkdirs() #建立多级目录
+```
+
+* set
+```python
+set.difference()
+```
+
+* itertools
+
+* setattr()/getattr()
+```python
+setattr(self, name, )
+```
+
+* glob 模块
+```
+glob.glob("")
+#只用到三个匹配符，"*", "?", "[]" "*"匹配0个或多个字符，"?"匹配单个字符： "[]"匹配指定范围内字符。
+```

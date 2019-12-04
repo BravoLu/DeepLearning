@@ -78,3 +78,45 @@ e.g.
 &>file 标准输出和标准错误输出都定向到fil中
 rm -f $(find / -name core) &> /dev/null, /dev/null是一个文件，所有传给它的东西它都丢弃掉。
 
+## 2019-12-3
+Linux 查找指令
+![pic](imgs/find.png)
+
+进程相关指令
+* jobs (-l) 显示挂起，正在运行的程序。
+* kill %(jobs number)
+
+常用指令：
+* ln/ln -s (软连接/硬连接)
+* > 覆盖原文件 / >> 在文件末尾添加
+* chown 用户名:组名 文件路径(4=read, 2=write, 1=execute)
+* chmod 文件拥有者
+* du: disk usage / du -h 每个文件的大小 /du -hs 该目录的总大小
+* df -h 显示磁盘的可用空间。
+
+shell使用技巧：
+* 使用ctrl+r搜索命令行历史记录。
+
+解压：
+```shell 
+tar -xzvf 解压(-xvf 解压.tar, -xzvf 解压tar.gz) x:解压, v:日志, f:文件路径 z:gz 
+tar -czvf 压缩
+```
+
+
+## 2019-12-4
+查看Ubuntu版本
+```shell
+cat /proc/version
+```
+
+端口映射
+* -L 将本地的某个端口映射到远程主机的某个端口
+* -R 将远程主机的某个端口映射到本机的某个端口
+* -N 不执行远程命令，用于转发端口
+```shell
+ssh -f N -L 8889:localhost:8888
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub host@ip address
+```
+

@@ -1,1 +1,0 @@
-CUDA_VISIBLE_DEVICES=0 python RPP.py -d market -a resnet50_rpp -b 64 -j 4 --log logs/market-1501/RPP/  --feature 256 --height 384 --width 128 --epochs 50 --step_size 20 --data-dir ~/share2/data/Market-1501-v15.09.15/ --resume logs/market-1501/PCB_20epoch/checkpoint.pth.tar
