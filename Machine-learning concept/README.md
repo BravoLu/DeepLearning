@@ -148,3 +148,14 @@ self training
 一般细粒度识别可以分为两种：基于强监督信息的额方法和仅使用弱监督信息的方法。
 基于强监督的细粒度识别通常需要使用边界框和局部标注信息。
 
+
+## 2019-12-5
+在阅读Yolov3论文的时候发现对logistic loss认识不足。
+1. logistic function的定义：
+![pic](img/logistic_loss.jpg)
+2. 性质：
+P(x)+P(-x) = 1
+3. 由于性质1，可以用于Logistic 回归。
+![pic](img/logistic_regression.jpg)
+4. logistic loss function:
+![pic](img/logistic_loss_function.jpg)
